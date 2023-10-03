@@ -16,6 +16,7 @@ echo "$PRIVATE_KEY" > "$SSH_PATH/deploy_key"
 
 if [ ! -z "$SSH_CONFIG" ]
 then
+  CONFIG=$SSH_CONFIG
   # CONFIG=$(echo "$SSH_CONFIG" | base64 -d)
   echo "$CONFIG" > "$SSH_PATH/config"
   chmod 600 "$SSH_PATH/config"
