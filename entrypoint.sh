@@ -9,15 +9,15 @@ mkdir -p "$SSH_PATH"
 touch "$SSH_PATH/known_hosts"
 touch "$SSH_PATH/deploy_key"
 
-PRIVATE_KEY=$SSH_PRIVATE_KEY
-# PRIVATE_KEY=$(echo "$SSH_PRIVATE_KEY" | base64 -d)
+# PRIVATE_KEY=$SSH_PRIVATE_KEY
+PRIVATE_KEY=$(echo "$SSH_PRIVATE_KEY" | base64 -d)
 
 echo "$PRIVATE_KEY" > "$SSH_PATH/deploy_key"
 
 if [ ! -z "$SSH_CONFIG" ]
 then
-  CONFIG=$SSH_CONFIG
-  # CONFIG=$(echo "$SSH_CONFIG" | base64 -d)
+  # CONFIG=$SSH_CONFIG
+  CONFIG=$(echo "$SSH_CONFIG" | base64 -d)
   echo "$CONFIG" > "$SSH_PATH/config"
   chmod 600 "$SSH_PATH/config"
 fi
