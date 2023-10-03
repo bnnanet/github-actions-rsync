@@ -4,6 +4,7 @@ set -eu
 
 # Set deploy key
 SSH_PATH="$HOME/.ssh"
+SSH_CMDS=""
 mkdir -p "$SSH_PATH"
 
 # touch "$SSH_PATH/known_hosts"
@@ -20,12 +21,15 @@ then
   CONFIG=$(echo "$SSH_CONFIG" | base64 -d)
   echo "$CONFIG" > "$SSH_PATH/config"
   chmod 600 "$SSH_PATH/config"
+  SSH_CMDS="-F $SSH_PATH/config"
 fi
 
 chmod 700 "$SSH_PATH"
 # chmod 600 "$SSH_PATH/known_hosts"
 chmod 600 "$SSH_PATH/deploy_key"
 
+SSH_CMDS="$SSH_CMDS -i $SSH_PATH/deploy_key -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+
 # Do deployment
 #shellcheck disable=SC2153
-sh -c "rsync ${INPUT_RSYNC_OPTIONS} -e 'ssh -i $SSH_PATH/deploy_key -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' ${GITHUB_WORKSPACE}${INPUT_RSYNC_SOURCE} ${SSH_USERNAME}@${SSH_HOSTNAME}:${INPUT_RSYNC_TARGET}"
+sh -c "rsync ${INPUT_RSYNC_OPTIONS} -e 'ssh $SSH_CMDS' ${GITHUB_WORKSPACE}${INPUT_RSYNC_SOURCE} ${SSH_USERNAME}@${SSH_HOSTNAME}:${INPUT_RSYNC_TARGET}"
