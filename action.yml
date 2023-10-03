@@ -1,6 +1,9 @@
 # action.yml
-name: 'Rsync Deployments'
+name: 'rsync deploy with custom ssh config'
 description: 'Rsync files from a GitHub repo to a destination server over SSH'
+branding:
+  icon: 'upload-cloud'
+  color: 'green'
 inputs:
   RSYNC_OPTIONS:
     description: 'Rsync-specific options when running the command. Exclusions, deletions, etc'
