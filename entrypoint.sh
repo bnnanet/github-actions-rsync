@@ -32,4 +32,4 @@ SSH_CMDS="$SSH_CMDS -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
 
 # Do deployment
 #shellcheck disable=SC2153
-sh -c "rsync ${INPUT_RSYNC_OPTIONS} -e 'ssh $SSH_CMDS -i $SSH_PATH/deploy_key' ${GITHUB_WORKSPACE}${INPUT_RSYNC_SOURCE} ${SSH_USERNAME}@${SSH_HOSTNAME}:${INPUT_RSYNC_TARGET}"
+sh -c "rsync ${INPUT_RSYNC_OPTIONS} -e 'ssh $SSH_CMDS' ${GITHUB_WORKSPACE}${INPUT_RSYNC_SOURCE} ${SSH_USERNAME}@${SSH_HOSTNAME}:${INPUT_RSYNC_TARGET}"
