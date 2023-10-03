@@ -6,7 +6,7 @@ set -eu
 SSH_PATH="$HOME/.ssh"
 mkdir -p "$SSH_PATH"
 
-touch "$SSH_PATH/known_hosts"
+# touch "$SSH_PATH/known_hosts"
 touch "$SSH_PATH/deploy_key"
 
 # PRIVATE_KEY=$SSH_PRIVATE_KEY
@@ -23,8 +23,9 @@ then
 fi
 
 chmod 700 "$SSH_PATH"
-chmod 600 "$SSH_PATH/known_hosts"
+# chmod 600 "$SSH_PATH/known_hosts"
 chmod 600 "$SSH_PATH/deploy_key"
 
 # Do deployment
-sh -c "rsync ${INPUT_RSYNC_OPTIONS} ${GITHUB_WORKSPACE}${INPUT_RSYNC_SOURCE} ${SSH_USERNAME}@${SSH_HOSTNAME}:${INPUT_RSYNC_TARGET}"
+#shellcheck disable=SC2153
+sh -c "rsync ${INPUT_RSYNC_OPTIONS} -e 'ssh -i $SSH_PATH/deploy_key -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' ${GITHUB_WORKSPACE}${INPUT_RSYNC_SOURCE} ${SSH_USERNAME}@${SSH_HOSTNAME}:${INPUT_RSYNC_TARGET}"
