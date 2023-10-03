@@ -9,6 +9,7 @@ Rsync files from a GitHub repo to a destination server over SSH
 | `SSH_PRIVATE_KEY`  | The private key part of an SSH key pair. The public key part should be added to the `authorized_keys` on the destination server. |
 | `SSH_USERNAME`     | The username to use when connecting to the destination server                                                                    |
 | `SSH_HOSTNAME`     | The hostname of the destination server                                                                                           |
+| `SSH_CONFIG`       | Override the SSH config (~/.ssh/config) file                                                                                     |
 
 ## Required arguments
 
@@ -21,7 +22,7 @@ Rsync files from a GitHub repo to a destination server over SSH
 ## Example usage
 
 ```yaml
-name: Create Sandbox
+name: Deploy to Environment
 
 on: pull_request
 
@@ -34,8 +35,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v1
 
-      - name: Deploy to sandbox via rsync
-        uses: trendyminds/github-actions-rsync@master
+      - name: Deploy via rsync
+        uses: bnnanet/github-actions-rsync@master
         with:
           RSYNC_OPTIONS: -avzr --delete --exclude node_modules --exclude '.git*'
           RSYNC_TARGET: /path/to/target/folder/on/server
@@ -44,6 +45,7 @@ jobs:
           SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
           SSH_USERNAME: ${{secrets.SSH_USERNAME}}
           SSH_HOSTNAME: ${{secrets.SSH_HOSTNAME}}
+          SSH_CONFIG: ${{secrets.SSH_CONFIG}}
 ```
 
 ## Disclaimer
