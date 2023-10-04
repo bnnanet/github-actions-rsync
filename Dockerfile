@@ -1,10 +1,12 @@
-FROM alpine:latest
+FROM alpine:edge
 
-# Update
-RUN apk update
+# Install packages & Update
+RUN apk add --no-cache --update rsync openssh-client openssl && \
+    rm -rf /var/cache/apk/*
 
-# Install packages
-RUN apk add rsync openssh-client openssl
+RUN addgroup -S appgroup && adduser -S app -G appgroup
+
+USER app
 
 # Copy entrypoint
 COPY entrypoint.sh /entrypoint.sh

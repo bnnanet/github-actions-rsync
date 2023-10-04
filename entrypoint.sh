@@ -5,6 +5,7 @@ set -eu
 # Set deploy key
 SSH_PATH="$HOME/.ssh"
 SSH_IDENTITY="$SSH_PATH/deploy_key"
+SSH_CFG="$SSH_PATH/config"
 SSH_CMDS=""
 mkdir -p "$SSH_PATH"
 chmod 700 "$SSH_PATH"
@@ -16,9 +17,9 @@ echo "$PRIVATE_KEY" > $SSH_IDENTITY
 if [ ! -z "$SSH_CONFIG" ]
 then
   CONFIG=$(echo "$SSH_CONFIG" | awk '{gsub(/\\n/, "\n")} 1' | tr -d '"')
-  echo "$CONFIG" > "$SSH_PATH/config"
-  chmod 600 "$SSH_PATH/config"
-  SSH_CMDS="-F $SSH_PATH/config"
+  echo "$CONFIG" > $SSH_CFG
+  chmod 600 $SSH_CFG
+  SSH_CMDS="-F $SSH_CFG"
 fi
 
 chmod 600 $SSH_IDENTITY
