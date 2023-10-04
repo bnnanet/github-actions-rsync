@@ -6,29 +6,25 @@ set -eu
 SSH_PATH="$HOME/.ssh"
 SSH_CMDS=""
 mkdir -p "$SSH_PATH"
+chmod 700 "$SSH_PATH"
 
-# touch "$SSH_PATH/known_hosts"
 touch "$SSH_PATH/deploy_key"
 
-# PRIVATE_KEY=$SSH_PRIVATE_KEY
-PRIVATE_KEY=$(echo "$SSH_PRIVATE_KEY" | base64 -d)
+PRIVATE_KEY=$(echo "$SSH_PRIVATE_KEY" | awk '{gsub(/\\n/, "\n")} 1' | tr -d '"')
 
 echo "$PRIVATE_KEY" > "$SSH_PATH/deploy_key"
 
 if [ ! -z "$SSH_CONFIG" ]
 then
-  # CONFIG=$SSH_CONFIG
-  CONFIG=$(echo "$SSH_CONFIG" | base64 -d)
+  CONFIG=$(echo "$SSH_CONFIG" | awk '{gsub(/\\n/, "\n")} 1' | tr -d '"')
   echo "$CONFIG" > "$SSH_PATH/config"
   chmod 600 "$SSH_PATH/config"
   SSH_CMDS="-F $SSH_PATH/config"
 fi
 
-chmod 700 "$SSH_PATH"
-# chmod 600 "$SSH_PATH/known_hosts"
 chmod 600 "$SSH_PATH/deploy_key"
 
-SSH_CMDS="$SSH_CMDS -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+SSH_CMDS="$SSH_CMDS -i $SSH_PATH/deploy_key -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
 
 # Do deployment
 #shellcheck disable=SC2153
