@@ -4,15 +4,14 @@ set -eu
 
 # Set deploy key
 SSH_PATH="$HOME/.ssh"
+SSH_IDENTITY="$SSH_PATH/deploy_key"
 SSH_CMDS=""
 mkdir -p "$SSH_PATH"
 chmod 700 "$SSH_PATH"
 
-touch "$SSH_PATH/deploy_key"
-
 PRIVATE_KEY=$(echo "$SSH_PRIVATE_KEY" | awk '{gsub(/\\n/, "\n")} 1' | tr -d '"')
 
-echo "$PRIVATE_KEY" > "$SSH_PATH/deploy_key"
+echo "$PRIVATE_KEY" > $SSH_IDENTITY
 
 if [ ! -z "$SSH_CONFIG" ]
 then
@@ -22,9 +21,9 @@ then
   SSH_CMDS="-F $SSH_PATH/config"
 fi
 
-chmod 600 "$SSH_PATH/deploy_key"
+chmod 600 $SSH_IDENTITY
 
-SSH_CMDS="$SSH_CMDS -i $SSH_PATH/deploy_key -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+SSH_CMDS="$SSH_CMDS -i $SSH_IDENTITY -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
 
 # Do deployment
 #shellcheck disable=SC2153
