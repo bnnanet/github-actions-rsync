@@ -9,7 +9,15 @@ Rsync files from a GitHub repo to a destination server over SSH
 | `SSH_PRIVATE_KEY`  | The private key part of an SSH key pair. The public key part should be added to the `authorized_keys` on the destination server. |
 | `SSH_USERNAME`     | The username to use when connecting to the destination server                                                                    |
 | `SSH_HOSTNAME`     | The hostname of the destination server                                                                                           |
-| `SSH_CONFIG`       | Override the SSH config (~/.ssh/config) file                                                                                     |
+| `SSH_CONFIG`       | Override the SSH config (/gh-rsync/.ssh/config) file                                                                             |
+
+```sh
+# The `SSH_PRIVATE_KEY` will be stored in `/gh-rsync/.ssh/deploy_key`
+# It can be referenced in a `SSH_CONFIG` like:
+
+Host example.com
+  IdentityFile /gh-rsync/.ssh/deploy_key
+```
 
 ## Required arguments
 
