@@ -3,10 +3,11 @@
 set -eu
 
 # Set deploy key
-SSH_PATH="$HOME/.ssh"
+SSH_PATH="/gh-rsync/.ssh"
 SSH_IDENTITY="$SSH_PATH/deploy_key"
 SSH_CFG="$SSH_PATH/config"
 SSH_CMDS=""
+
 mkdir -p "$SSH_PATH"
 chmod 700 "$SSH_PATH"
 
